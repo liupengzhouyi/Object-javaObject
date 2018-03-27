@@ -18,12 +18,10 @@ public class linkToDatabase {
         try {
             //add database's diver;
             Class.forName(this.getDataBaseDriver());
-
             //get a connection ,the parameters is dataBase's address, dataBase's user name, database's user password;
             try {
                 this.database_Link = DriverManager.getConnection(this.getDataBaseAddress(),
                         this.getDataBaseUserName(), this.getDataBasePassWord());
-
                 //3.创建Statement对象   statement对象是数据库sql语句的载体，
                 // 通过statement对象可以执行数据库访问的sql语句。。。
                 // 使用statement对象执行insert、update、delete语句是调用executeUpdate()方法。
@@ -32,7 +30,6 @@ public class linkToDatabase {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
@@ -41,12 +38,32 @@ public class linkToDatabase {
     // set resultSet
     public void palySQLIntructions() {
         try {
-            //ResultSet rs = stmt.executeQuery(sql);
+            // ResultSet rs = stmt.executeQuery(sql);
             Connection temp = this.getDatabase_Link() ;
             String sql = this.getSqlIntructions() ;
-            ResultSet lp_set = this.getDatabaseResultSet();
-            int count = this.dataBase_Stmt.executeUpdate(sql);
-            System.out.print(count);
+            //System.out.println(sql);
+            // ResultSet lp_set = this.getDatabaseResultSet();
+            int k = this.dataBase_Stmt.executeUpdate(sql);
+            // System.out.print(count);
+            /*
+            lp_set = this.dataBase_Stmt.executeQuery(sql);
+            this.setDatabaseResultSet(lp_set);
+            */
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void palySQLIntructionsForInsetInformation() {
+        try {
+            //ResultSet rs = stmt.executeQuery(sql);
+            //Connection temp = this.getDatabase_Link() ;
+            String sql = this.getSqlIntructions() ;
+            System.out.println(sql);
+            // ResultSet lp_set = this.getDatabaseResultSet();
+            //stmt.executeUpdate(sql);
+            this.dataBase_Stmt.executeUpdate(sql);
+            // System.out.print(count);
             /*
             lp_set = this.dataBase_Stmt.executeQuery(sql);
             this.setDatabaseResultSet(lp_set);
@@ -155,17 +172,17 @@ public class linkToDatabase {
         return sqlIntructions;
     }
 
-    //setting sql inturctions;
+    // setting sql inturctions;
     public void setSqlIntructions(String sqlIntructions) {
         this.sqlIntructions = sqlIntructions;
     }
 
-    //return the Connection Object;
+    // return the Connection Object;
     public Connection getDatabase_Link() {
         return database_Link;
     }
 
-    //setting the Connection ;
+    // setting the Connection ;
     public void setDatabase_Link(Connection database_Link) {
         this.database_Link = database_Link;
     }
@@ -175,7 +192,7 @@ public class linkToDatabase {
         return databaseResultSet;
     }
 
-    //create data into the set;
+    // create data into the set;
     public void setDatabaseResultSet(ResultSet databaseResultSet) {
         this.databaseResultSet = databaseResultSet;
     }

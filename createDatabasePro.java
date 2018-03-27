@@ -1,13 +1,7 @@
 package JDBC;
 
-
-/*
- *
- *
- */
-public class test01 {
-    public static void main(String [] args) {
-
+public class createDatabasePro {
+    public createDatabasePro() {
         String sqlString  = "CREATE TABLE student("
                 + "student_id     INT(10)         PRIMARY KEY     AUTO_INCREMENT, "
                 + "studentName     VARCHAR(25)     NOT NULL, "

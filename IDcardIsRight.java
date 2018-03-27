@@ -1,4 +1,4 @@
-package Github;
+package JDBC;
 
 import java.text.SimpleDateFormat;
 import java.util.*;

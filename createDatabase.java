@@ -3,7 +3,6 @@ package JDBC;
 import java.sql.SQLException;
 
 public class createDatabase {
-
     public createDatabase(String createIntructions) {
         linkToDatabase lp_domon = new linkToDatabase("com.mysql.jdbc.Driver",
                 "root",

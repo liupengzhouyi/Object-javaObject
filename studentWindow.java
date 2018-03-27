@@ -1,4 +1,4 @@
- package Github;
+ package JDBC;
 
 import javax.swing.text.html.HTMLEditorKit;
 import javax.xml.crypto.Data;
@@ -114,7 +114,6 @@ import java.util.Date;
                 if (code <= 90 && code >= 65) {
                     String string = KeyEvent.getKeyText(code);
                     lp_password = lp_password + string;
-
                     int length = tempPassWord.length();
                     tempPassWord = "";
                     String temp = new String("*");
@@ -122,14 +121,13 @@ import java.util.Date;
                         tempPassWord = tempPassWord + temp;
                     }
                 } else if (code <= 57 && code >= 49) {
-                    String string = KeyEvent.getKeyText(code);
-
-
-                    int length = tempPassWord.length();
-                    tempPassWord = "";
-                    String temp = new String("*");
+                    String string = KeyEvent.getKeyText(code) ;
+                    lp_password = lp_password + string ;
+                    int length = tempPassWord.length() ;
+                    tempPassWord = "" ;
+                    String temp = new String("*") ;
                     for (int i = 0; i < length; i++) {
-                        tempPassWord = tempPassWord + temp;
+                        tempPassWord = tempPassWord + temp ;
                     }
                 } else if (code == 10) {
                     ;
@@ -142,9 +140,22 @@ import java.util.Date;
                     }
                     //System.out.println(lp_password);
                 }
+                /*
+                //不支持小键盘
+                else if (code <= 105 && code >= 95) {
+                    String string = KeyEvent.getKeyText(code);
+                    lp_password = lp_password + string;
+                    int length = tempPassWord.length();
+                    tempPassWord = "";
+                    String temp = new String("*");
+                    for (int i = 0; i < length; i++) {
+                        tempPassWord = tempPassWord + temp;
+                    }
+                } e
+                 */
                 String string = KeyEvent.getKeyText(code);
-                //System.out.print("string : " + string);
-                //System.out.println(", KeyCode : " + code);
+                // System.out.print("string : " + string);
+                // System.out.println(", KeyCode : " + code);
 
                 String temp = new String("*");
                 int length = tempPassWord.length();
@@ -157,6 +168,7 @@ import java.util.Date;
                 //设置光标
                 tempPassWord = lp_TextForInputStudentInforMation09.getText();
                 lp_TextForInputStudentInforMation09.setCaretPosition(length);
+                // System.out.println(lp_password);
                 //super.keyPressed(e);
             }
 
@@ -261,7 +273,6 @@ import java.util.Date;
 
         lp_ButtonForinputStudentInformation02.addMouseListener(new MouseListener() {
             int i = 0;
-
             @Override
             public void mouseClicked(MouseEvent e) {
                 String temp = lp_TextForInputStudentInforMation01.getText();
@@ -302,9 +313,16 @@ import java.util.Date;
                 } else {
                     i = i + 1;
                 }
-                //152631199710070912
+
                 temp = lp_TextForInputStudentInforMation02.getText();
                 String temp1 = lp_TextForInputStudentInforMation04.getText();
+                int keyOfBrithday = IsBrithdayFormatIsRight(temp1) ;
+                if (keyOfBrithday != 1) {
+                    nullErrorTips("E-mail Format is  Error !", 0);
+                } else {
+                    i = i + 1 ;
+                }
+                //152631199710070912
                 if (temp.length() > 14) {
                     temp = temp.substring(6, 14);
                 }
@@ -326,7 +344,36 @@ import java.util.Date;
                     i = i + 1 ;
                 }
 
-
+                //检验电子邮件
+                temp = lp_TextForInputStudentInforMation07.getText() ;
+                key = IfEmailIsRight(temp) ;
+                if (key != 1) {
+                    nullErrorTips("E-mail address format error!", 0);
+                } else {
+                    i = i + 1;
+                }
+                System.out.println("i = " + i);
+                if (i == 9) {
+                    //data save into the database
+                    String studentName = lp_TextForInputStudentInforMation01.getText() ;
+                    String studentID = lp_TextForInputStudentInforMation02.getText() ;
+                    String studentSchoolNumber = lp_TextForInputStudentInforMation03.getText() ;
+                    String studentBrithday = lp_TextForInputStudentInforMation04.getText() ;
+                    String studentSex = lp_TextForInputStudentInforMation05.getText() ;
+                    String studentQQNumber = lp_TextForInputStudentInforMation06.getText() ;
+                    String student_eMail = lp_TextForInputStudentInforMation07.getText() ;
+                    String studentPhoneNumber = lp_TextForInputStudentInforMation08.getText() ;
+                    String studentPassWord = lp_password ;
+                    //222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222
+                    inputInformationYoDataBase lpInputInformation = new inputInformationYoDataBase(studentName,
+                            studentID, studentSchoolNumber, studentBrithday, studentSex, studentQQNumber, student_eMail,
+                            studentPhoneNumber, studentPassWord);
+                    i = 0 ;
+                } else {
+                    nullErrorTips("Have a bug, link to us!", 0) ;
+                    i = 0 ;
+                }
+                lp_password = "";
             }
 
             @Override
@@ -358,6 +405,9 @@ import java.util.Date;
 
         lp_frameForInputStudentInformation.setVisible(true);
     }
+
+
+
 
     //1-> add
     //0-> new
@@ -464,7 +514,7 @@ import java.util.Date;
     public static void outputYoutInformation(String province, String sex, String brithday){
         Frame lp_nullErrorTipsWindow = new Frame("信息提示");
         lp_nullErrorTipsWindow.addWindowListener(new newWindow());
-        lp_nullErrorTipsWindow.setSize(500, 500);
+        lp_nullErrorTipsWindow.setSize(500, 300);
         lp_nullErrorTipsWindow.setLayout(new GridLayout(4, 1));
 
         Panel lpPanelForProvince = new Panel() ;
@@ -537,7 +587,7 @@ import java.util.Date;
             //错误提示：ID长度不够
             nullErrorTips("ID length is not error! ", 0);
         } else {
-            test ie = new test(ID);
+            IDcardIsRight  ie = new IDcardIsRight (ID);
             String IDInformation = ie.toString();
             boolean key = ie.ifRight();
             if (key == true) {
@@ -556,4 +606,38 @@ import java.util.Date;
         }
         return returnKey;
     }
+
+    //检验邮件格式是否正确
+    public static int IfEmailIsRight(String eMail) {
+        int returnKey = 0 ;
+        int length = eMail.length() ;
+        boolean endWith = eMail.endsWith(".com") ;
+        boolean haveAITA = eMail.contains("@") ;
+        if (endWith) {
+            if (haveAITA) {
+                int a = eMail.lastIndexOf(".com") ;
+                int b = eMail.lastIndexOf("@") ;
+                if (a > b) {
+                    returnKey = 1 ;
+                }
+            }
+        }
+        return returnKey ;
+    }
+
+    //判定生日格式
+     public static int IsBrithdayFormatIsRight(String brithday) {
+        int key =0;
+        if (brithday.length() != 10) {
+            key = 0;
+        } else {
+            if (brithday.indexOf("-") == 4) {
+                if (brithday.lastIndexOf("-") == 7) {
+                    key = 1;
+                }
+            }
+        }
+        return key;
+     }
+
 }
