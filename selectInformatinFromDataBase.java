@@ -38,20 +38,6 @@ public class selectInformatinFromDataBase {
             System.out.print("s_id: " + s_id);
             System.out.println("  s_name: " +s_name);
             }
-
-            // sql = "SELECT s_name, s_age" + "FROM student01;";
-
-            /*
-            rs = stmt.executeQuery(sql);
-            while(rs.next()) {
-                String name = rs.getString("s_name");
-                int age = rs.getInt("s_age");
-                System.out.println("Name: " + name);
-                System.out.println(" Age: " +  age);
-                System.out.print('\n');
-            }
-            */
-
             rs.close();
             //7.关闭资源
             try {
@@ -73,11 +59,9 @@ public class selectInformatinFromDataBase {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
     public static void main(String[] args) {
         selectInformatinFromDataBase  jdbcTest= new selectInformatinFromDataBase();
         jdbcTest.testDDL();
     }
-
 }

@@ -3,6 +3,10 @@ package JDBC;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 public class showAllInformation {
@@ -32,6 +36,15 @@ public class showAllInformation {
     private Panel lpPanelForButtonRefresh ;
     private Panel lpPanelForButtonOut ;
 
+    //定义数据库驱动程序
+    private static final String DBDRIVER="com.mysql.jdbc.Driver";
+    //数据库连接地址
+    private static final String DBURL="jdbc:mysql://localhost:3306/tempfile";//school表示数据库
+    //数据库用户名
+    private static final String userName="root";
+    //电脑上的数据库密码
+    private static final String passWord="lp184126";
+
     public void selectObjectInShowAll() {
         numberOfAddObject = 0;
         lpTempStringForSaveSelectObject = new String[9] ;
@@ -58,7 +71,6 @@ public class showAllInformation {
                     lpTrueString[i] = lpTempStringForSaveSelectObject[i] ;
                     string = string + lpTrueString[i] + '\n' ;
                 }
-
                 lpTextForSelectObject.setText(
                         "您一共选择了" + numberOfAddObject + "项，分别是: " + '\n' +
                                 "-----------------------------------------------" + '\n' +
@@ -67,6 +79,7 @@ public class showAllInformation {
                 );
                 keyOfTowWindow = true ;
                 biudingWindow(numberOfAddObject, lpTrueString) ;
+                setText(numberOfAddObject, lpTrueString);
                 if (keyOfTowWindow) {
                     lp_FrameShowAll.setVisible(true);
                     closeSelectObjectWindow();
@@ -216,10 +229,73 @@ public class showAllInformation {
             lpPanelA[i].add(lp_Text[i], BorderLayout.CENTER) ;
             lpPanelA[i].add(lpPanelB[i], BorderLayout.NORTH) ;
 
-
             lp_Panel.add(lpPanelA[i]) ;
         }
         lp_FrameShowAll.add(lp_Panel, BorderLayout.CENTER) ;
+    }
+
+    public void setText(int numberOfObject, String[] strings) {
+        for (int i=0;i<numberOfObject;i++) {
+
+        }
+        try {
+            //1.注册驱动
+            Class.forName(DBDRIVER);
+            //2.获取连接
+            Connection conn = DriverManager.getConnection(DBURL,userName,passWord);
+            //3.创建Statement对象
+            Statement stmt = conn.createStatement();
+
+            //执行查找操作
+            String sql = "SELECT * FROM student";
+
+            ResultSet rs = stmt.executeQuery(sql);
+            //输出查找结果
+            while(rs.next()){
+                // 先获取数据
+
+                int student_id = rs.getInt("student_id") ;
+                String studenntName = rs.getString("studentName") ;
+                String stiudentSchoolNumber = rs.getString("studentSchoolNumber");
+                String studentID = rs.getString("studentID") ;
+                int studentAge = rs.getInt("studentAge") ;
+                String studentBrithday = rs.getString("studentBrithday") ;
+                String studentSex = rs.getString("studentSex") ;
+                String studentQQNumber = rs.getString("studentQQNumber") ;
+                String studentPhoneNumber = rs.getString("studentPhoneNumber") ;
+                String studentEmail = rs.getString("studentEmail") ;
+
+                for (int i=0;i<numberOfObject;i++) {
+                    if (strings[i] == "student_id") {
+                        //lp_Text[i].setText(student_id);
+                    } else if (strings[i] == "studentSchoolNumber"){
+                        ;
+                    } else {
+                        lp_Text[i].append(rs.getString(strings[i]) + '\n');
+                    }
+                }
+            }
+            rs.close();
+            //7.关闭资源
+            try {
+                if(stmt != null)
+                {
+                    stmt.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            try {
+                if(conn != null)
+                {
+                    conn.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void setButton() {
@@ -270,7 +346,6 @@ public class showAllInformation {
 
     public void visitWindow() {
         this.selectObjectInShowAll();
-
         if (keyOfTowWindow) {
             lp_FrameShowAll.setVisible(true);
         }
